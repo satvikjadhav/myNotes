@@ -35,4 +35,16 @@ class NotesViewModel: ObservableObject {
             notes[index].content = content
         }
     }
+    
+    func saveNotes() {
+        if let data = try? JSONEncoder().encode(notes) {
+            savedNotes = data
+        }
+        
+    func loadNotes() {
+        if let data = savedNotes, let decodedNotes = try? JSONDecoder().decode([Note].self, from: data) {
+                notes = decodedNotes
+        }
+        }
+    }
 }
