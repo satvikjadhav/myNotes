@@ -34,6 +34,9 @@ class NotesViewModel: ObservableObject {
     @AppStorage("notes") private var savedNotes: Data?
     @Published var notes: [Note] = []
     
+    init() {
+        loadNotes()
+    }
     
     func addNote(title: String, content: String) {
         let newNote = Note(title: title, content: content)
@@ -61,12 +64,12 @@ class NotesViewModel: ObservableObject {
         if let data = try? JSONEncoder().encode(notes) {
             savedNotes = data
         }
+    }
         
     func loadNotes() {
         if let data = savedNotes, let decodedNotes = try? JSONDecoder().decode([Note].self, from: data) {
                 notes = decodedNotes
-        }
-        }
+            }
     }
 }
 
@@ -74,6 +77,7 @@ struct ContentView: View {
     @StateObject var viewModel = NotesViewModel()
     
     var body: some View {
+
         NavigationStack {
             List {
                 ForEach(viewModel.notes) { note in
