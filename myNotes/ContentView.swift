@@ -97,6 +97,7 @@ struct AddEditNoteView: View {
 
 struct ContentView: View {
     @StateObject var viewModel = NotesViewModel()
+    @State private var showAddNote: Bool = false
     
     var body: some View {
 
@@ -114,6 +115,15 @@ struct ContentView: View {
                         }
                     }
                 }
+            }
+            .navigationTitle("Notes")
+            .toolbar {
+                Button(action: {showAddNote = true}) {
+                    Image(systemName: "plus")
+                }
+            }
+            .sheet(isPresented: $showAddNote) {
+                AddEditNoteView(viewModel: viewModel)
             }
         }
         .navigationTitle(Text("Notes"))
