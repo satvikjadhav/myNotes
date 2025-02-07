@@ -28,4 +28,11 @@ class NotesViewModel: ObservableObject {
             notes[index].isCompleted.toggle()
         }
     }
+    
+    func updateNote(note: Note, title: String, content: String) {
+        if let index = notes.firstIndex(where: {$0.id == note.id}) {
+            notes[index].title = title
+            notes[index].content = content
+        }
+    }
 }
