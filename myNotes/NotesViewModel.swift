@@ -23,5 +23,9 @@ class NotesViewModel: ObservableObject {
         notes.remove(atOffsets: offsets)
     }
     
-    
+    func toggleCompletion(note: Note) {
+        if let index = notes.firstIndex(where: {$0.id == note.id}) {
+            notes[index].isCompleted.toggle()
+        }
+    }
 }
