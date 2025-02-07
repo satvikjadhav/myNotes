@@ -18,4 +18,10 @@ class NotesViewModel: ObservableObject {
         let newNote = Note(title: title, content: content)
         notes.append(newNote)
     }
+    
+    func deleteNote(at offsets: IndexSet) {
+        notes.remove(atOffsets: offsets)
+    }
+    
+    
 }
