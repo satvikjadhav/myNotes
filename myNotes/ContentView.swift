@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = NotesViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(viewModel.notes) { note in
+                    NavigationLink(destination: NoteDetailView(note: note, viewModel: viewModel)) {
+                        HStack {
+                            if note.isCompleted {
+                                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
+                                Text(note.title).strikethrough()
+                            } else {
+                                Text(note.title)
+                            }
+                        }
+                    }
+                }
+            }
         }
-        .padding()
     }
 }
 
