@@ -27,6 +27,7 @@ struct NoteDetailView: View {
                 Text(note.isCompleted ? "Mark as Incomplete" : "Mark as Complete")
             }
         }
+        .navigationTitle("Note Details")
     }
 }
 
@@ -73,6 +74,27 @@ class NotesViewModel: ObservableObject {
     }
 }
 
+struct AddEditNoteView: View {
+    @ObservedObject var viewModel: NotesViewModel
+    
+    @State private var title: String = ""
+    @State private var content: String = ""
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                TextField("Title", text: $title)
+                TextEditor(text: $content)
+                
+                Button("Save") {
+                    viewModel.addNote(title: title, content: content)
+                }
+            }
+        }
+        .navigationTitle("New Note")
+    }
+}
+
 struct ContentView: View {
     @StateObject var viewModel = NotesViewModel()
     
@@ -94,6 +116,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationTitle(Text("Notes"))
     }
 }
 
