@@ -117,6 +117,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onDelete(perform: viewModel.deleteNote)
             }
             .navigationTitle("Notes")
             .toolbar {
