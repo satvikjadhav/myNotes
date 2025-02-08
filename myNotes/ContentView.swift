@@ -85,19 +85,34 @@ struct AddEditNoteView: View {
     
     @State private var title: String = ""
     @State private var content: String = ""
+    var note: Note?
+    
+    init(viewModel: NotesViewModel, note: Note?) {
+        self.viewModel = viewModel
+        // Initialize the title state with the note's title, or an empty string if the note is nil
+        self._title = State(initialValue: note?.title ?? "")
+        // Initialize the content state with the note's content, or an empty string if the note is nil
+        self._content = State(initialValue: note?.content ?? "")
+        self.note = note
+    }
     
     var body: some View {
         NavigationStack {
             Form {
                 TextField("Title", text: $title)
                 TextEditor(text: $content).frame(height: 200)
-                
+            }
+            .navigationTitle(note == nil ? "New Note" : "Edit Note")
+            .toolbar {
                 Button("Save") {
-                    viewModel.addNote(title: title, content: content)
+                    if let note = note {
+                        viewModel.updateNote(note: note, title: title, content: content)
+                    } else {
+                        viewModel.addNote(title: title, content: content)
+                    }
                     dismiss()
                 }
             }
-            .navigationTitle("New Note")
         }
     }
 }
@@ -131,7 +146,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showAddNote) {
-                AddEditNoteView(viewModel: viewModel)
+                AddEditNoteView(viewModel: viewModel, note: selectedNote)
             }
         }
         .navigationTitle(Text("Notes"))
