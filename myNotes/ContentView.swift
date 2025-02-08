@@ -21,8 +21,17 @@ struct NoteDetailView: View {
     
     var body: some View {
         VStack {
-            Text(note.title).font(.largeTitle).bold()
-            Text(note.content).font(.body)
+            Text(note.title)
+                .font(.largeTitle)
+                .bold()
+                .strikethrough(note.isCompleted)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text(note.content)
+                .font(.body).padding(.top, 10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Spacer()
             
             Button(action: {viewModel.toggleCompletion(note: note)}) {
                 Text(note.isCompleted ? "Mark as Incomplete" : "Mark as Complete")
@@ -31,6 +40,7 @@ struct NoteDetailView: View {
                     .background(note.isCompleted ? Color.red : Color.green)
                     .cornerRadius(5)
             }
+            .padding(.bottom, 20)
         }
         .padding()
         .navigationTitle("Note Details")
@@ -150,7 +160,7 @@ struct ContentView: View {
                         Text(note.content)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                                .lineLimit(2) // Show up to 2 lines of content
+                                .lineLimit(1) // Show up to 2 lines of content
                     }
                 }
                 .onDelete(perform: viewModel.deleteNote)
