@@ -17,6 +17,7 @@ struct Note: Identifiable, Codable {
 struct NoteDetailView: View {
     let note: Note
     @ObservedObject var viewModel: NotesViewModel
+    @State private var showEditView = false
     
     var body: some View {
         VStack {
@@ -33,6 +34,16 @@ struct NoteDetailView: View {
         }
         .padding()
         .navigationTitle("Note Details")
+        .toolbar {
+            Button(action: {
+                showEditView = true
+            }) {
+                Image(systemName: "pencil")
+            }
+        }
+        .sheet(isPresented: $showEditView) {
+            AddEditNoteView(viewModel: viewModel, note: note)
+        }
     }
 }
 
@@ -127,18 +138,20 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(viewModel.notes) { note in
+                    NavigationLink(destination: NoteDetailView(note: note, viewModel: viewModel)) {
                         HStack {
                             if note.isCompleted {
                                 Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
-                                Text(note.title).strikethrough()
+                                Text(note.title).bold().strikethrough()
                             } else {
-                                Text(note.title)
+                                Text(note.title).bold()
                             }
                         }
-                        .onTapGesture {
-                            selectedNote = note
-                            showAddNote = true
-                        }
+                        Text(note.content)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                                .lineLimit(2) // Show up to 2 lines of content
+                    }
                 }
                 .onDelete(perform: viewModel.deleteNote)
             }
