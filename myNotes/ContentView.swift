@@ -120,13 +120,13 @@ struct AddEditNoteView: View {
 struct ContentView: View {
     @StateObject var viewModel = NotesViewModel()
     @State private var showAddNote: Bool = false
+    @State private var selectedNote: Note?
     
     var body: some View {
 
         NavigationStack {
             List {
                 ForEach(viewModel.notes) { note in
-                    NavigationLink(destination: NoteDetailView(note: note, viewModel: viewModel)) {
                         HStack {
                             if note.isCompleted {
                                 Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
@@ -135,13 +135,19 @@ struct ContentView: View {
                                 Text(note.title)
                             }
                         }
-                    }
+                        .onTapGesture {
+                            selectedNote = note
+                            showAddNote = true
+                        }
                 }
                 .onDelete(perform: viewModel.deleteNote)
             }
             .navigationTitle("Notes")
             .toolbar {
-                Button(action: {showAddNote = true}) {
+                Button(action: {
+                    selectedNote = nil
+                    showAddNote = true
+                }) {
                     Image(systemName: "plus")
                 }
             }
