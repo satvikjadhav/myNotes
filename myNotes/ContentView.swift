@@ -76,6 +76,7 @@ class NotesViewModel: ObservableObject {
 
 struct AddEditNoteView: View {
     @ObservedObject var viewModel: NotesViewModel
+    @Environment(\.dismiss) var dismiss  // Access the dismiss function
     
     @State private var title: String = ""
     @State private var content: String = ""
@@ -88,6 +89,7 @@ struct AddEditNoteView: View {
                 
                 Button("Save") {
                     viewModel.addNote(title: title, content: content)
+                    dismiss()
                 }
             }
         }
