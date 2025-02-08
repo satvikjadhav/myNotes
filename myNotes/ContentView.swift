@@ -90,15 +90,15 @@ struct AddEditNoteView: View {
         NavigationStack {
             Form {
                 TextField("Title", text: $title)
-                TextEditor(text: $content)
+                TextEditor(text: $content).frame(height: 200)
                 
                 Button("Save") {
                     viewModel.addNote(title: title, content: content)
                     dismiss()
                 }
             }
+            .navigationTitle("New Note")
         }
-        .navigationTitle("New Note")
     }
 }
 
