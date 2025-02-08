@@ -20,13 +20,18 @@ struct NoteDetailView: View {
     
     var body: some View {
         VStack {
-            Text(note.title)
-            Text(note.content)
+            Text(note.title).font(.largeTitle).bold()
+            Text(note.content).font(.body)
             
             Button(action: {viewModel.toggleCompletion(note: note)}) {
                 Text(note.isCompleted ? "Mark as Incomplete" : "Mark as Complete")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(note.isCompleted ? Color.red : Color.green)
+                    .cornerRadius(5)
             }
         }
+        .padding()
         .navigationTitle("Note Details")
     }
 }
