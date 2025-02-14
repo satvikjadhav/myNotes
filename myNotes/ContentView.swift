@@ -41,6 +41,7 @@ struct NoteDetailView: View {
                     .cornerRadius(5)
             }
             .padding(.bottom, 20)
+            .shadow(radius: 5)
         }
         .padding()
         .navigationTitle("Note Details")
@@ -50,6 +51,7 @@ struct NoteDetailView: View {
             }) {
                 Image(systemName: "pencil")
             }
+            .shadow(radius: 5)
         }
         .sheet(isPresented: $showEditView) {
             AddEditNoteView(viewModel: viewModel, note: note)
@@ -89,7 +91,8 @@ class NotesViewModel: ObservableObject {
     
     func saveNotes() {
         if let data = try? JSONEncoder().encode(notes) {
-            savedNotes = data
+            // Adding this so that the app automatically saves the notes when updated.
+            UserDefaults.standard.set(data, forKey: "notes")
         }
     }
         
@@ -128,11 +131,14 @@ struct AddEditNoteView: View {
                 Button("Save") {
                     if let note = note {
                         viewModel.updateNote(note: note, title: title, content: content)
+                        viewModel.saveNotes()
                     } else {
                         viewModel.addNote(title: title, content: content)
+                        viewModel.saveNotes()
                     }
                     dismiss()
                 }
+                .shadow(radius: 5)
             }
         }
     }
@@ -173,12 +179,12 @@ struct ContentView: View {
                 }) {
                     Image(systemName: "plus")
                 }
+                .shadow(radius: 3)
             }
             .sheet(isPresented: $showAddNote) {
                 AddEditNoteView(viewModel: viewModel, note: selectedNote)
             }
         }
-        .navigationTitle(Text("Notes"))
     }
 }
 
