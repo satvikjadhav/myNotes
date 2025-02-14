@@ -156,17 +156,22 @@ struct ContentView: View {
                 ForEach(viewModel.notes) { note in
                     NavigationLink(destination: NoteDetailView(note: note, viewModel: viewModel)) {
                         HStack {
-                            if note.isCompleted {
-                                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
-                                Text(note.title).bold().strikethrough()
-                            } else {
-                                Text(note.title).bold()
+                            Image(systemName: note.isCompleted ? "checkmark.circle.fill" : "circle")
+                                .foregroundColor(note.isCompleted ? .green : .gray)
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(note.title)
+                                    .font(.headline)
+                                    .foregroundColor(note.isCompleted ? .secondary : .primary)
+                                    .strikethrough(note.isCompleted)
+                                
+                                Text(note.content)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                    .lineLimit(2)
                             }
+                            .padding(.vertical, 8)
                         }
-                        Text(note.content)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                                .lineLimit(1) // Show up to 2 lines of content
                     }
                 }
                 .onDelete(perform: viewModel.deleteNote)
