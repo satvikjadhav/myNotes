@@ -21,26 +21,33 @@ struct NoteDetailView: View {
     
     var body: some View {
         VStack {
-            Text(note.title)
-                .font(.largeTitle)
-                .bold()
-                .strikethrough(note.isCompleted)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Text(note.content)
-                .font(.body).padding(.top, 10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
+            VStack {
+                Text(note.title)
+                    .font(.largeTitle)
+                    .bold()
+                    .strikethrough(note.isCompleted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text(note.content)
+                    .font(.body).padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 8).fill(.ultraThinMaterial))
+
             Spacer()
             
             Button(action: {viewModel.toggleCompletion(note: note)}) {
-                Text(note.isCompleted ? "Mark as Incomplete" : "Mark as Complete")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(note.isCompleted ? Color.red : Color.green)
-                    .cornerRadius(5)
+                HStack {
+                    Image(systemName: note.isCompleted ? "xmark.circle" : "checkmark.circle")
+                    Text(note.isCompleted ? "Mark Incomplete" : "Mark Complete")
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(note.isCompleted ? Color.red : Color.green)
+                .foregroundColor(.white)
+                .clipShape(Capsule())
             }
-            .padding(.bottom, 20)
             .shadow(radius: 5)
         }
         .padding()
