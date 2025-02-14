@@ -172,10 +172,15 @@ struct ContentView: View {
                             }
                             .padding(.vertical, 8)
                         }
+                        .background(Color(.systemBackground))
+                        .cornerRadius(8)
                     }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                 }
                 .onDelete(perform: viewModel.deleteNote)
             }
+            .listStyle(.plain)
             .navigationTitle("Notes")
             .toolbar {
                 Button(action: {
